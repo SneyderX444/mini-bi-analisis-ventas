@@ -1,0 +1,97 @@
+\section{Funciones Principales y Caracteriisticas de Polars}
+
+\subsection{¿que es Polars?}
+
+Polars es una biblioteca moderna de manipulacion y analisis de datos en Python, diseñada para ofrecer alto rendimiento y eficiencia en el procesamiento de grandes volumenes de informacion. Surge como una alternativa a pandas, proporcionando mayor velocidad y mejor uso de memoria.
+
+Esta desarrollada en el lenguaje Rust, lo que le permite aprovechar la ejecucion paralela y una gestion de memoria optimizada.
+
+\subsection{Características Principales}
+
+\subsubsection{Alto Rendimiento}
+
+\begin{itemize}
+    \item Procesamiento más rápido en comparación con bibliotecas tradicionales.
+    \item Ejecución paralela automática.
+    \item Optimización interna de consultas.
+\end{itemize}
+
+\subsubsection{Eficiencia en Memoria}
+
+\begin{itemize}
+    \item Basado en Apache Arrow.
+    \item Reduce el consumo de memoria RAM.
+    \item Permite trabajar con datasets de gran tamaño.
+\end{itemize}
+
+\subsubsection{Ejecución Lazy}
+
+Polars permite trabajar en dos modos:
+
+\begin{itemize}
+    \item \textbf{Eager:} Ejecuta las operaciones inmediatamente.
+    \item \textbf{Lazy:} Construye un plan de ejecución optimizado antes de ejecutarlo.
+\end{itemize}
+
+El modo Lazy mejora significativamente el rendimiento en análisis complejos.
+
+\subsubsection{Compatibilidad}
+
+\begin{itemize}
+    \item Lectura de archivos CSV, Parquet, JSON y Excel.
+    \item Integración con herramientas de visualizacion.
+    \item Compatible con entornos como Jupyter Notebook.
+\end{itemize}
+
+\subsection{Funciones Principales}
+
+\subsubsection{Lectura de Datos}
+
+\begin{itemize}
+    \item \texttt{pl.read\_csv()}
+    \item \texttt{pl.read\_parquet()}
+    \item \texttt{pl.read\_excel()}
+\end{itemize}
+
+\subsubsection{Exploracion de Datos}
+
+\begin{itemize}
+    \item \texttt{df.head()}
+    \item \texttt{df.tail()}
+    \item \texttt{df.describe()}
+    \item \texttt{df.schema}
+    \item \texttt{df.shape}
+\end{itemize}
+
+\subsubsection{Limpieza de Datos}
+
+\begin{itemize}
+    \item \texttt{df.drop\_nulls()}
+    \item \texttt{df.fill\_null()}
+    \item \texttt{df.drop()}
+    \item \texttt{df.rename()}
+    \item \texttt{df.unique()}
+\end{itemize}
+
+\subsubsection{Transformacion y Analisis}
+
+\begin{itemize}
+    \item \texttt{df.select()}
+    \item \texttt{df.filter()}
+    \item \texttt{df.groupby()}
+    \item \texttt{df.sort()}
+    \item \texttt{df.with\_columns()}
+    \item \texttt{pl.col().mean()}
+    \item \texttt{pl.col().sum()}
+    \item \texttt{pl.col().median()}
+    \item \texttt{pl.col().std()}
+\end{itemize}
+
+\subsection{Ventajas en Proyectos de Business Intelligence}
+
+\begin{itemize}
+    \item Permite analizar grandes volumenes de datos de forma eficiente.
+    \item Mejora el rendimiento en comparacion con herramientas tradicionales.
+    \item Facilita la creacion de metricas e indicadores (KPIs).
+    \item Optimiza consultas mediante ejecucion diferida.
+\end{itemize}
