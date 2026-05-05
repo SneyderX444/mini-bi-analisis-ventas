@@ -1,0 +1,449 @@
+\documentclass[12pt,a4paper]{article}
+
+% Paquetes
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+
+% Márgenes
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+% Colores institucionales
+\definecolor{cafeoscuro}{RGB}{72, 40, 5}
+\definecolor{cafemedio}{RGB}{139, 90, 43}
+\definecolor{cafesuave}{RGB}{210, 180, 140}
+\definecolor{cremoso}{RGB}{255, 248, 235}
+\definecolor{verdecafe}{RGB}{85, 107, 47}
+\definecolor{grisclaro}{RGB}{245, 245, 245}
+
+% Encabezados y pies de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{cafemedio}{\textbf{Probabilidad y Estadística}}}
+\fancyhead[R]{\small\textcolor{cafemedio}{Análisis de Calidad del Café Colombiano}}
+\fancyfoot[C]{\small\textcolor{cafemedio}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{cafemedio}\leaders\hrule height \headrulewidth\hfill}}
+
+% Formato de secciones
+\titleformat{\section}{\large\bfseries\color{cafeoscuro}}{{\thesection.}}{0.5em}{}[\textcolor{cafeoscuro}{\titlerule[1pt]}]
+\titleformat{\subsection}{\normalsize\bfseries\color{cafemedio}}{{\thesubsection}}{0.5em}{}
+
+% Comando para cajas resaltadas
+\newcommand{\cajaresultado}[2]{%
+  \begin{center}
+    \colorbox{cremoso}{%
+      \parbox{0.85\textwidth}{%
+        \vspace{4pt}
+        \centering
+        \textbf{\textcolor{cafeoscuro}{#1}} \\[4pt]
+        \Large\textcolor{cafemedio}{\textbf{#2}}
+        \vspace{4pt}
+      }
+    }
+  \end{center}
+}
+
+%=============================================================
+\begin{document}
+%=============================================================
+
+%-------- PORTADA --------
+\begin{titlepage}
+  \pagecolor{cafeoscuro}
+  \color{white}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries\color{cafesuave} ANÁLISIS ESTADÍSTICO}\\[0.3cm]
+  {\large\color{white} de la calidad del café colombiano}\\[0.2cm]
+  {\large\color{cafesuave} Escala de Catación SCA}
+
+  \vspace{1.5cm}
+  \textcolor{cafemedio}{\rule{10cm}{1.5pt}}
+  \vspace{1cm}
+
+  {\large\bfseries\color{cafesuave} MEDIDAS DE CENTRALIZACIÓN}\\[0.5cm]
+  {\normalsize\color{white} Media Aritmética \quad $\cdot$ \quad Mediana \quad $\cdot$ \quad Moda}
+
+  \vspace{1.5cm}
+  \textcolor{cafemedio}{\rule{10cm}{1.5pt}}
+  \vspace{1.5cm}
+
+  \begin{center}
+    \begin{tabular}{rl}
+      \textcolor{cafesuave}{\textbf{Asignatura:}} & Probabilidad y Estadística \\[4pt]
+      \textcolor{cafesuave}{\textbf{Técnica:}}    & Muestreo Doble (dos fases) \\[4pt]
+      \textcolor{cafesuave}{\textbf{Muestra:}}    & $n = 60$ lotes de café \\[4pt]
+      \textcolor{cafesuave}{\textbf{Región:}}     & Eje Cafetero, Colombia \\[4pt]
+      \textcolor{cafesuave}{\textbf{Año:}}        & 2026 \\
+    \end{tabular}
+  \end{center}
+
+  \vfill
+  {\small\color{cafesuave} Sneyder, Santiago y Esteban}
+\end{titlepage}
+
+\pagecolor{white}
+\color{black}
+
+%-------- SECCIÓN 1: DATOS --------
+\section{Conjunto de Datos}
+
+\subsection{Descripción}
+
+Se analizaron $n = 60$ lotes de café provenientes del Eje Cafetero colombiano (Caldas, Quindío y Risaralda). Cada valor representa el \textbf{puntaje de catación SCA} (Specialty Coffee Association) asignado por un panel de tres catadores certificados Q-Grader. La escala va de 0 a 100 puntos.
+
+\subsection{Datos originales (sin ordenar)}
+
+\begin{center}
+\colorbox{grisclaro}{%
+\begin{minipage}{0.88\textwidth}
+\vspace{6pt}
+\centering
+\begin{tabular}{cccccccccc}
+51 & 92 & 14 & 71 & 60 & 20 & 82 & 86 & 74 & 74 \\
+87 & 99 & 23 & 02 & 21 & 52 & 01 & 87 & 29 & 37 \\
+01 & 63 & 59 & 20 & 32 & 75 & 57 & 21 & 88 & 48 \\
+90 & 58 & 41 & 91 & 59 & 79 & 14 & 61 & 61 & 46 \\
+61 & 50 & 54 & 63 & 02 & 50 & 06 & 20 & 72 & 38 \\
+17 & 03 & 88 & 59 & 13 & 08 & 89 & 52 & 01 & 83 \\
+\end{tabular}
+\vspace{6pt}
+\end{minipage}
+}
+\end{center}
+
+\subsection{Datos ordenados de menor a mayor}
+
+\begin{center}
+\begin{tabular}{cccccccccc}
+\toprule
+01 & 01 & 01 & 02 & 02 & 03 & 06 & 08 & 13 & 14 \\
+14 & 17 & 20 & 20 & 20 & 21 & 21 & 23 & 29 & 32 \\
+37 & 38 & 41 & 46 & 48 & 50 & 50 & 51 & 52 & 52 \\
+54 & 57 & 58 & 59 & 59 & 59 & 60 & 61 & 61 & 61 \\
+63 & 63 & 71 & 72 & 74 & 74 & 75 & 79 & 82 & 83 \\
+86 & 87 & 87 & 88 & 88 & 89 & 90 & 91 & 92 & 99 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+La tabla anterior muestra los 60 puntajes organizados de menor a mayor, lo que facilita el cálculo visual de la mediana y la identificación de valores repetidos.
+
+%-------- SECCIÓN 2: MEDIA --------
+\section{Media Aritmética (\(\bar{x}\))}
+
+\subsection{Definición}
+
+La \textbf{media aritmética} es la medida de tendencia central más utilizada. Se obtiene sumando todos los valores del conjunto y dividiendo entre el número total de datos:
+
+\begin{equation}
+  \bar{x} = \frac{\displaystyle\sum_{i=1}^{n} x_i}{n}
+\end{equation}
+
+Donde $x_i$ representa cada dato y $n$ es el tamaño de la muestra.
+
+\subsection{Cálculo paso a paso}
+
+\textbf{Paso 1 — Sumar todos los puntajes:}
+
+\[
+\sum_{i=1}^{60} x_i = 51{+}92{+}14{+}71{+}60{+}20{+}82{+}86{+}74{+}74 \;+\; \cdots
+\]
+
+Organizando la suma por filas para mayor claridad:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Fila} & \textbf{Suma parcial} \\
+\midrule
+Fila 1: $51+92+14+71+60+20+82+86+74+74$ & $= 624$ \\
+Fila 2: $87+99+23+02+21+52+01+87+29+37$ & $= 438$ \\
+Fila 3: $01+63+59+20+32+75+57+21+88+48$ & $= 464$ \\
+Fila 4: $90+58+41+91+59+79+14+61+61+46$ & $= 600$ \\
+Fila 5: $61+50+54+63+02+50+06+20+72+38$ & $= 416$ \\
+Fila 6: $17+03+88+59+13+08+89+52+01+83$ & $= 413$ \\
+\midrule
+\textbf{Total} & $\mathbf{= 2955}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Paso 2 — Aplicar la fórmula:}
+
+\begin{equation}
+  \bar{x} = \frac{2955}{60} = 49.25
+\end{equation}
+
+\cajaresultado{Media Aritmética}{\(\bar{x} = 49.25\) puntos}
+
+\subsection{Interpretación}
+
+El puntaje promedio de catación de los 60 lotes es \textbf{49.25 puntos}. Según la escala SCA, este valor se ubica en la categoría \textit{``Comercial''} (50--59 puntos), en el límite inferior, lo que indica que el promedio general de la muestra se encuentra \textit{por debajo del umbral de café de especialidad} (80 puntos). Esto refleja una alta heterogeneidad: existen lotes de calidad excepcional (puntajes $\geq 90$) que conviven con lotes de calidad deficiente (puntajes $< 20$).
+
+%-------- SECCIÓN 3: MEDIANA --------
+\section{Mediana (\(Me\))}
+
+\subsection{Definición}
+
+La \textbf{mediana} es el valor que divide el conjunto de datos ordenados en dos mitades iguales: el 50\% de los datos es menor o igual a la mediana y el otro 50\% es mayor o igual. Se considera más robusta que la media ante valores extremos.
+
+\subsection{Procedimiento para $n$ par}
+
+Como $n = 60$ es un número \textbf{par}, la mediana se calcula como el promedio de los dos valores centrales:
+
+\begin{equation}
+  Me = \frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2} = \frac{x_{(30)} + x_{(31)}}{2}
+\end{equation}
+
+\subsection{Cálculo}
+
+De los datos ordenados, identificamos las posiciones 30 y 31:
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Posición} & \textbf{Valor} & \textbf{Posición} & \textbf{Valor} \\
+\midrule
+$x_{(28)}$ & 51 & $x_{(32)}$ & 54 \\
+$x_{(29)}$ & 52 & $x_{(33)}$ & 57 \\
+\rowcolor{cafesuave}
+$x_{(30)}$ & \textbf{52} & $x_{(31)}$ & \textbf{54} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+Me = \frac{52 + 54}{2} = \frac{106}{2} = 53
+\]
+
+\cajaresultado{Mediana}{\(Me = 53\) puntos}
+
+\subsection{Interpretación}
+
+La mediana es \textbf{53 puntos}, lo que significa que el \textbf{50\% de los lotes} obtuvo un puntaje $\leq 53$ puntos y el otro 50\% obtuvo un puntaje $\geq 53$ puntos. Comparando con la media ($\bar{x} = 49.25$):
+
+\[
+\bar{x} = 49.25 \;<\; Me = 53
+\]
+
+Dado que $Me > \bar{x}$, la distribución presenta una leve \textbf{asimetría negativa} (cola hacia la izquierda): unos pocos puntajes muy bajos jalan la media hacia abajo, pero la mayoría de los lotes se concentra en valores moderados o altos.
+
+%-------- SECCIÓN 4: MODA --------
+\section{Moda (\(Mo\))}
+
+\subsection{Definición}
+
+La \textbf{moda} es el valor que aparece con mayor frecuencia en el conjunto de datos. Un conjunto puede ser:
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{Unimodal}: una sola moda.
+  \item \textbf{Bimodal}: dos modas.
+  \item \textbf{Multimodal}: más de dos modas.
+  \item \textbf{Amodal}: ningún valor se repite.
+\end{itemize}
+
+\subsection{Identificación de valores repetidos}
+
+Contando las repeticiones en los datos ordenados:
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+\textbf{Valor} & \textbf{Frecuencia} & \textbf{Observación} \\
+\midrule
+\rowcolor{cafesuave}
+\textbf{01} & \textbf{3} & \textbf{Máxima frecuencia $\Rightarrow$ Moda} \\
+02 & 2 & \\
+20 & 3 & Máxima frecuencia $\Rightarrow$ también Moda \\
+21 & 2 & \\
+50 & 2 & \\
+52 & 2 & \\
+59 & 3 & Máxima frecuencia $\Rightarrow$ también Moda \\
+61 & 3 & Máxima frecuencia $\Rightarrow$ también Moda \\
+74 & 2 & \\
+87 & 2 & \\
+88 & 2 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Los valores \textbf{01, 20, 59 y 61} aparecen cada uno \textbf{3 veces}, siendo los de mayor frecuencia.
+
+\cajaresultado{Moda (valor más frecuente según el informe base)}{\(Mo = 1\) (aparece 3 veces)}
+
+\subsection{Interpretación}
+
+La moda de \textbf{1 punto} indica que el puntaje más bajo de la escala SCA es el que se repite con mayor frecuencia en la muestra (junto con 20, 59 y 61). Que la moda más baja sea tan extrema sugiere que un pequeño grupo de lotes presenta \textbf{defectos graves} en la catación. El hecho de que el conjunto sea \textit{multimodal} refuerza la alta heterogeneidad ya detectada en la media y la mediana.
+
+%-------- SECCIÓN 5: COMPARACIÓN --------
+\section{Comparación de las Tres Medidas}
+
+\subsection{Resumen de resultados}
+
+\begin{center}
+\begin{tabular}{>{\bfseries\color{cafeoscuro}}l c c c}
+\toprule
+\textbf{Medida} & \textbf{Fórmula} & \textbf{Resultado} & \textbf{Categoría SCA} \\
+\midrule
+Media & $\bar{x} = \Sigma x_i / n$ & 49.25 puntos & Comercial \\
+Mediana & $Me = (x_{30}+x_{31})/2$ & 53 puntos & Comercial \\
+Moda & Valor más frecuente & 1 punto & Bajo Estándar \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Relación entre las medidas y forma de la distribución}
+
+La relación entre estas tres medidas permite identificar el tipo de asimetría:
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[->, thick, color=cafemedio] (-4,0) -- (4,0) node[right]{\small Puntaje};
+  % Curva asimétrica izquierda
+  \draw[thick, color=cafeoscuro, smooth] plot[domain=-3.5:3.5, samples=80]
+    (\x, {1.5*exp(-0.5*(\x-0.5)^2) - 0.05*(\x+2)^2 + 0.2});
+  % Flechas de medidas
+  \draw[dashed, color=red!70!black, thick] (-1.2, 0) -- (-1.2, 1.1)
+    node[above, font=\small\bfseries]{\textcolor{red!70!black}{Mo=1}};
+  \draw[dashed, color=verdecafe, thick] (0.4, 0) -- (0.4, 1.4)
+    node[above, font=\small\bfseries]{\textcolor{verdecafe}{Me=53}};
+  \draw[dashed, color=cafeoscuro, thick] (-0.3, 0) -- (-0.3, 1.3)
+    node[below right, font=\small\bfseries]{\textcolor{cafeoscuro}{$\bar{x}$=49.25}};
+  % Etiqueta asimetría
+  \node[font=\small\itshape, color=cafemedio] at (0, -0.5) {Asimetría negativa: $Mo < \bar{x} < Me$};
+\end{tikzpicture}
+\end{center}
+
+Cuando $Mo < \bar{x} < Me$, la distribución tiene \textbf{asimetría negativa} (cola izquierda), lo que coincide con el coeficiente de asimetría calculado de $-0.1751$.
+
+\subsection{Conclusión estadística}
+
+\begin{itemize}
+  \item La \textbf{media} ($\bar{x} = 49.25$) es la más sensible a valores extremos; los puntajes muy bajos (1, 1, 1, 2, 2, 3...) la arrastran hacia abajo.
+  \item La \textbf{mediana} ($Me = 53$) es más representativa del ``lote típico'', ya que no se ve afectada por los valores extremos.
+  \item La \textbf{moda} ($Mo = 1$) refleja el puntaje defectuoso más recurrente, pero no es un buen indicador del centro de los datos.
+  \item Para este conjunto de datos con \textbf{alta variabilidad} (CV = 60.14\%), la mediana es la medida de centralización más adecuada para describir la calidad típica del café de la muestra.
+\end{itemize}
+
+%-------- SECCIÓN 6: CLASIFICACIÓN SCA --------
+\section{Clasificación de los 60 Lotes según la Escala SCA}
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Categoría SCA} & \textbf{Rango} & \textbf{Lotes} & \textbf{\%} & \textbf{Color} \\
+\midrule
+Excepcional (Outstanding)   & 90--100 & 5  & 8.3\%  & \cellcolor{green!60} \\
+Excelente (Excellent)        & 85--89  & 7  & 11.7\% & \cellcolor{green!30} \\
+Muy Bueno (Very Good)        & 80--84  & 3  & 5.0\%  & \cellcolor{yellow!60} \\
+Bueno (Good)                 & 70--79  & 6  & 10.0\% & \cellcolor{yellow!30} \\
+Aceptable (Fair)             & 60--69  & 9  & 15.0\% & \cellcolor{orange!30} \\
+Comercial (Commercial)       & 50--59  & 10 & 16.7\% & \cellcolor{orange!60} \\
+Bajo Estándar (Below Std.)   & $<50$   & 20 & 33.3\% & \cellcolor{red!30} \\
+\midrule
+\textbf{Total} & & \textbf{60} & \textbf{100\%} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+De los 60 lotes, \textbf{15 lotes} (25\%) alcanzan el nivel de \textit{Café de Especialidad} ($\geq 80$ puntos), mientras que \textbf{20 lotes} (33.3\%) se ubican en la categoría de Bajo Estándar, lo que confirma la amplia dispersión de la calidad en el Eje Cafetero.
+
+%=============================================================
+\section{Pruebas de Hipótesis}
+%=============================================================
+
+\subsection{Definición y Contexto}
+
+Una \textbf{hipótesis estadística} es una afirmación sobre uno o más parámetros de una población
+que se somete a verificación mediante evidencia muestral. En el análisis de la calidad del café
+colombiano, las pruebas de hipótesis permiten determinar si la media de puntuación SCA de los
+lotes evaluados difiere significativamente de un valor de referencia establecido.
+
+\subsection{Hipótesis Nula e Hipótesis Alternativa}
+
+\begin{itemize}[leftmargin=1.5cm]
+  \item \textbf{\textcolor{cafeoscuro}{Hipótesis nula} ($H_0$):} Afirmación de igualdad o ausencia
+    de efecto. Se asume verdadera hasta que la evidencia indique lo contrario. \\
+    Ejemplo: $H_0: \mu = 80$ puntos SCA.
+
+  \item \textbf{\textcolor{cafemedio}{Hipótesis alternativa} ($H_1$):} Afirmación que el
+    investigador busca demostrar. \\
+    Ejemplo bilateral: $H_1: \mu \neq 80$ \quad
+    Unilateral derecha: $H_1: \mu > 80$ \quad
+    Unilateral izquierda: $H_1: \mu < 80$
+\end{itemize}
+
+\subsection{Tipos de Error}
+
+\begin{center}
+\begin{tabular}{>{\bfseries}p{4cm} p{4.5cm} p{4.5cm}}
+\toprule
+\rowcolor{cafesuave}
+ & \textbf{$H_0$ Verdadera} & \textbf{$H_0$ Falsa} \\
+\midrule
+Rechazar $H_0$   & Error Tipo I $(\alpha)$    & Decisión correcta \\
+\rowcolor{grisclaro}
+No rechazar $H_0$ & Decisión correcta         & Error Tipo II $(\beta)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\cajaresultado{Nivel de significancia}{$\alpha = 0.05$ \quad (probabilidad de Error Tipo I)}
+
+\subsection{Estadístico de Prueba}
+
+Cuando se trabaja con medias muestrales y varianza desconocida, se utiliza la
+\textbf{prueba $t$ de Student}:
+
+\begin{equation}
+  t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}
+\end{equation}
+
+donde $\bar{x}$ es la media muestral, $\mu_0$ el valor hipotético, $s$ la desviación estándar
+muestral y $n$ el tamaño de la muestra.
+
+Si el \textbf{valor $p$} calculado es menor que $\alpha$, se rechaza $H_0$.
+
+\subsection{Procedimiento General}
+
+\begin{enumerate}[leftmargin=1.5cm, label=\textbf{\textcolor{cafeoscuro}{\arabic*.}}]
+  \item Plantear $H_0$ y $H_1$ con base en el objetivo del estudio.
+  \item Establecer el nivel de significancia $\alpha$.
+  \item Seleccionar el estadístico de prueba adecuado ($Z$, $t$, $\chi^2$, $F$).
+  \item Calcular el valor del estadístico con los datos muestrales.
+  \item Comparar con el valor crítico o calcular el valor $p$.
+  \item Tomar la decisión: rechazar o no rechazar $H_0$.
+  \item Interpretar el resultado en el contexto del problema.
+\end{enumerate}
+
+%-------- BIBLIOGRAFÍA --------
+\vfill
+\section*{Referencias}
+
+\begin{itemize}
+  \item Specialty Coffee Association (SCA). \textit{Cupping Protocols}. 2023.
+  \item Informe base: \textit{Análisis Estadístico de la Calidad del Café Colombiano}. Esteban, 2026.
+  \item Informe base: \textit{Muestreo Doble (en dos fases)}. Sneyder y Santiago, 2026.
+\end{itemize}
+
+\end{document}
